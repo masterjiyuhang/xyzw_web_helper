@@ -7,12 +7,12 @@
           <div class="header-top">
             <img src="/icons/xiaoyugan.png" alt="XYZW" class="brand-logo">
             <!-- 主题切换按钮 -->
-            <ThemeToggle />
+            <!-- <ThemeToggle /> -->
           </div>
           <h1>游戏Token管理</h1>
         </div>
       </div>
-
+      <n-button type="primary" @click="() => showImportForm = !showImportForm">打开token弹窗</n-button>
       <!-- Token导入区域 -->
       <a-modal v-model:visible="showImportForm" width="40rem" :footer="false" :default-visible="!tokenStore.hasTokens">
         <template #title>
@@ -39,20 +39,20 @@
         </div>
         <div class="card-body">
           <manual-token-form @cancel="() => showImportForm = false" @ok="() => showImportForm = false"
-            v-if="importMethod === 'manual'" />
+            v-if=" importMethod === 'manual' " />
           <url-token-form @cancel="() => showImportForm = false" @ok="() => showImportForm = false"
-            v-if="importMethod === 'url'" />
+            v-if=" importMethod === 'url' " />
           <bin-token-form @cancel="() => showImportForm = false" @ok="() => showImportForm = false"
-            v-if="importMethod === 'bin'" />
+            v-if=" importMethod === 'bin' " />
         </div>
       </a-modal>
 
       <!-- Token列表 -->
-      <div v-if="tokenStore.hasTokens" class="tokens-section">
+      <div v-if=" tokenStore.hasTokens " class="tokens-section">
         <div class="section-header">
           <h2>我的Token列表 ({{ tokenStore.gameTokens.length }}个)</h2>
           <div class="header-actions">
-            <n-button v-if="tokenStore.selectedToken" type="success" @click="goToDashboard">
+            <n-button v-if=" tokenStore.selectedToken " type="success" @click="goToDashboard">
               <template #icon>
                 <n-icon>
                   <Home />
@@ -61,7 +61,7 @@
               返回控制台
             </n-button>
 
-            <n-button v-if="!showImportForm" type="primary" @click="showImportForm = true">
+            <n-button v-if=" !showImportForm " type="primary" @click="showImportForm = true">
               <template #icon>
                 <n-icon>
                   <Add />
@@ -84,16 +84,16 @@
         </div>
 
         <div class="tokens-grid">
-          <a-card v-for="token in tokenStore.gameTokens" :key="token.id" :class="{
+          <a-card v-for=" token in tokenStore.gameTokens " :key="token.id" :class="{
             'token-card': true,
             active: selectedTokenId === token.id
-          }" @click="selectToken(token)">
+          }" @click="selectToken( token )">
             <template #title>
               <a-space class="token-name">
                 {{ token.name }}
-                <a-tag color="red" v-if="token.server">{{ token.server }}</a-tag>
+                <a-tag color="red" v-if=" token.server ">{{ token.server }}</a-tag>
                 <!-- 连接状态指示器 -->
-                <a-badge :status="getTokenStyle(token.id)" :text="getConnectionStatusText(token.id)" />
+                <a-badge :status="getTokenStyle( token.id )" :text="getConnectionStatusText( token.id )" />
                 <!-- 连接状态文字 -->
                 <!-- <a-tag color="green">
                   {{ getConnectionStatusText(token.id) }}
@@ -101,7 +101,7 @@
               </a-space>
             </template>
             <template #extra>
-              <n-dropdown :options="getTokenActions(token)" @select="(key) => handleTokenAction(key, token)">
+              <n-dropdown :options="getTokenActions( token )" @select="( key ) => handleTokenAction( key, token )">
                 <n-button text>
                   <template #icon>
                     <n-icon>
@@ -115,9 +115,9 @@
             <template #default>
               <div class="token-display">
                 <span class="token-label">Token:</span>
-                <code class="token-value">{{ maskToken(token.token) }}</code>
+                <code class="token-value">{{ maskToken( token.token ) }}</code>
               </div>
-              <a-button :loading="refreshingTokens.has(token.id)" @click.stop="refreshToken(token)">
+              <a-button :loading="refreshingTokens.has( token.id )" @click.stop="refreshToken( token )">
                 <template #icon>
                   <n-icon>
                     <Refresh />
@@ -129,11 +129,11 @@
               <div class="token-timestamps">
                 <div class="timestamp-item">
                   <span class="timestamp-label">创建：</span>
-                  <span class="timestamp-value">{{ formatTime(token.createdAt) }}</span>
+                  <span class="timestamp-value">{{ formatTime( token.createdAt ) }}</span>
                 </div>
                 <div class="timestamp-item">
                   <span class="timestamp-label">使用：</span>
-                  <span class="timestamp-value">{{ formatTime(token.lastUsed) }}</span>
+                  <span class="timestamp-value">{{ formatTime( token.lastUsed ) }}</span>
                 </div>
               </div>
 
@@ -147,8 +147,8 @@
                 </div>
 
                 <!-- 升级选项（仅对临时存储的token显示） -->
-                <div v-if="token.importMethod !== 'url'" class="storage-upgrade">
-                  <n-button size="tiny" type="success" ghost @click.stop="upgradeTokenToPermanent(token)">
+                <div v-if=" token.importMethod !== 'url' " class="storage-upgrade">
+                  <n-button size="tiny" type="success" ghost @click.stop="upgradeTokenToPermanent( token )">
                     <template #icon>
                       <n-icon>
                         <Star />
@@ -160,8 +160,8 @@
               </div>
             </template>
             <template #actions>
-              <n-button type="primary" size="large" block :loading="connectingTokens.has(token.id)"
-                @click="startTaskManagement(token)">
+              <n-button type="primary" size="large" block :loading="connectingTokens.has( token.id )"
+                @click="startTaskManagement( token )">
                 <template #icon>
                   <n-icon>
                     <Home />
@@ -175,7 +175,7 @@
       </div>
 
       <!-- 空状态 -->
-      <a-empty v-if="!tokenStore.hasTokens && !showImportForm">
+      <a-empty v-if=" !tokenStore.hasTokens && !showImportForm ">
         <template #image>
           <i class="mdi:bed-empty"></i>
         </template>
